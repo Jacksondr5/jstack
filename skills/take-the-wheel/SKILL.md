@@ -1,6 +1,10 @@
 ---
 name: take-the-wheel
 description: Trigger this if the user says 'take the wheel'.
+license: MIT. See LICENSE.txt.
+metadata:
+  original-author: Theo Browne
+  adapted-from: https://github.com/t3dotgg/tstack/blob/30c48051900a474c6e7b0d0324adcf1750573d83/skills/full-send/SKILL.md
 ---
 
 # Take the Wheel
