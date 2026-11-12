@@ -1,3 +1,5 @@
+<img src="assets/favicon.svg" width="64" alt="jstack logo">
+
 # jstack
 
 The agent skills I use with Claude Code and Codex. Some use
