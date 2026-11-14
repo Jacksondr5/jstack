@@ -2,6 +2,19 @@
 
 How an item moves from candidate to closed. Dashboard stages are in brackets. Upstream's `CONTRIBUTING.md` on `main` is the policy. This page is how we meet it, plus the lessons that cost us something.
 
+## What upstream accepts
+
+Upstream rewrote `CONTRIBUTING.md` on 2026-11-11. Review time is their bottleneck, and they say most outside PRs will be closed. Read it on `main` before you recommend a route. In short:
+
+- **Bug fixes only.** A crash, a regression or a real performance problem is a bug. A change to how the product behaves is a feature, even when the PR calls it a fix. Features, UI overhauls, new providers, and architecture or auth changes are closed automatically.
+- **3 open PRs per person**, unless the person is vouched for in `.github/VOUCHED.td`. Jackson is not. A fourth PR is closed when it opens.
+- **A PR that conflicts** with `main` gets a `needs-rebase` label, and closes after 7 days without activity.
+- **A PR that breaks a rule** gets a notice naming the rule, and closes 72 hours later. A reply or a push in that time sends it back for another look.
+- **The help they ask for first** is finding things they can close: duplicates, bugs that are already fixed, dead PRs. A comment on someone's existing PR, from having tested it, beats a second PR.
+- **Bans** follow automation spam, repeated pings, a fight over a closure, and a second account.
+- **Models.** A PR is closed when any of its code was written by a Gemini model or by Muse Wonder (Muse Wonder Full is accepted). Those models may review a giveback. They never write one.
+- **The team** is the logins in `.github/TRIAGE_EXEMPTIONS.td`.
+
 ## 1. Validate [found → validating]
 
 - Read the code on fresh upstream `main` (`git fetch origin`) and record the SHA in `lastValidatedSha` with a one-line `validationVerdict`.
@@ -20,10 +33,10 @@ How an item moves from candidate to closed. Dashboard stages are in brackets. Up
 
 Open a `route_decision` ask with your recommendation:
 
-- **Direct PR** (`direct_pr`): a very small, focused fix for an obvious bug. The PR explains why it qualifies. While the `CONTRIBUTING.md` seems to lead towards requiring an issue first, in practice most of our obvious fixes have gotten merged, so we can offer a PR more than you'd think.
-- **Issue first** (`issue_first`): a substantial bug that needs maintainer triage. Prepare the PR anyway (step 3) so it can open the moment a maintainer agrees. Never file an issue *alongside* a PR: it reads as two confusingly related items.
-- **Comment** (`comment`): someone else's thread already covers it, and we have new evidence or an offer.
-- **Ideas discussion** (`discussion`): a feature or an intentional behaviour change, which needs explicit maintainer approval before any PR. File it under Ideas, not Q&A. Calling a behaviour change a bug fix does not exempt it.
+- **Direct PR** (`direct_pr`): a small fix for an obvious bug. Upstream asks for no issue here. The PR's Scope section says why it needs none. Each one takes one of our 3 PR slots, so say in your recommendation what is open now and whether this item is worth a slot.
+- **Issue first** (`issue_first`): a larger bug fix. Upstream requires its PR to link the issue that shows the bug. Prepare the PR anyway (step 3) so it can open the moment a maintainer agrees. Never file an issue *alongside* a PR: it reads as two confusingly related items.
+- **Comment** (`comment`): someone else's thread already covers it, and we have new evidence or an offer. When someone's open PR covers our bug, this is the route upstream prefers: test their PR and say what we saw.
+- **Ideas discussion** (`discussion`): a feature or an intentional behaviour change. A PR for one is closed unless a maintainer asked for it, and then the PR links the request. File it under Ideas, not Q&A. Calling a behaviour change a bug fix does not exempt it.
 - **Hold / drop** (`hold`, `drop`): the value doesn't justify the cost, or it isn't ours to raise.
 
 Security-shaped items: check https://t3.codes/security-policy, and keep the item `isPublic: false` until it is filed. 
@@ -38,7 +51,7 @@ Security-shaped items: check https://t3.codes/security-policy, and keep the item
   - Videos go up as GitHub user-attachments (see Jackson's global AGENTS.md).
   - A peer tester on a different model usually captures them.
 - **Review:** before posting non-trivial work, use the `council` skill to get a good review. Run the "not checked" items you can, instead of listing them.
-- **Draft the text** into a J5 artifact (`j5_write_artifact`, e.g. `giveback/GB-12-pr.md`). Point the ask's `private.draftPointer` at it. The PR body follows upstream's template: Problem, Change, Scope and approval, Verification, Not checked. Then the signature, and the harness line.
+- **Draft the text** into a J5 artifact (`j5_write_artifact`, e.g. `giveback/GB-12-pr.md`). Point the ask's `private.draftPointer` at it. The PR body follows upstream's template: Problem, Change, Scope, Verification. Scope links the issue, or says why a small fix needs none. Verification says how the bug was found, how the fix was checked and what was seen, and names what could not be checked. Then the signature, and the harness line.
 
 ## 4. Approve [approving, waiting on Jackson]
 
@@ -47,6 +60,7 @@ Open a `text_approval` ask carrying the exact text. When he approves an issue's 
 ## 5. Post [offered]
 
 - Rebase onto the latest `origin/main` and re-run the focused tests.
+- **Check the open PR limit first.** Upstream allows 3 open PRs per contributor who is not vouched for, and a bot closes a fourth within seconds (CONTRIBUTING "3 open PRs per person"). Run `gh pr list -R pingdotgg/t3code --author Jacksondr5 --state open`. If 3 are open, don't post: put the item in `held` (`waitingOn: maintainer`) and tell the dispatcher, who orders the queue for the next free slot. A PR the bot closed can be reopened once a slot frees.
 - Open the PR: `gh pr create -R pingdotgg/t3code --head Jacksondr5:<branch>`. For an issue, use upstream's issue template.
 - In the same session:
   - set the item's `primary` link (`ownership: ours`) and stage `offered`;
@@ -56,9 +70,12 @@ Open a `text_approval` ask carrying the exact text. When he approves an issue's 
 
 - **Review bots count.** Macroscope's approvability verdict gates upstream's deeper review, and "Needs Human Approval" is a gate only a maintainer can clear. CodeRabbit's actionable findings and Devin's reviews also count. For each finding: verify it against the source, prepare the fix on the branch, then bring Jackson the finding, your verdict and the change *before* you push or reply. False positives get a reasoned reply, once he approves it.
 - **Failing checks** get the same treatment as bot findings.
+- **A `needs-rebase` label** starts a 7-day clock. Rebase within a day or two. A purely mechanical rebase needs no approval. Anything more goes to Jackson first.
+- **A notice that the PR breaks a rule** starts a 72-hour clock. Tell Jackson at once, with the rule it names, your reading of whether it is right, and the reply or push you propose. Either one, inside the 72 hours, sends the PR back for another look.
+- **A closure** is never argued. If the reason can be fixed, bring Jackson the fix and a comment, or a focused replacement PR that links the old one.
 - **A maintainer's question** goes to Jackson as a `maintainer_question` ask.
 - **A maintainer's nod** on an offered fix: with text approved in advance, rebase, re-test, open the PR, then tell him. Without it, bring him the ready PR and wait. Speed matters: be ready to open a PR as soon as a maintainer agrees.
-- **Someone else opens a PR** for our item: don't open ours. Compare their approach with ours, offer a 👍 or a useful fact if Jackson agrees, and move the item to `held` with a `covering` link.
+- **Someone else opens a PR** for our item: don't open ours. Compare their approach with ours, and move the item to `held` with a `covering` link. Upstream asks people in this position to react, test the PR and say what they saw. So when it is worth it, test their PR on an isolated upstream build and bring Jackson a 👍 or a short comment with the result.
 - **Rebases:** force-push with lease only after re-checking the remote head, and only for a purely mechanical change. Additions go on as new commits. GitHub stacks can't cross forks, so wait for an outsider's base PR to merge rather than stacking on it.
 - **Third-party noise** (cross-links, +1s from others): one line in your report, or nothing.
 
