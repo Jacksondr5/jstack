@@ -22,6 +22,28 @@ This skill covers the context you need to perform giveback work from J5 Code to 
 5. **Evidence comes from T3's own build**, on an isolated upstream dev server (upstream's `test-t3-app` / `test-t3-mobile` skills). Live turns use Claude Haiku or GPT Luna. If a state can't be reached, say so in the post.
 6. **Keep the dashboard current in the same session** as the change it records: stage, links, asks, events. Another agent picks up from what the dashboard says, not from your memory.
 
+## One agent per item
+
+Each open item has its own agent, in its own thread in this project. The thread is titled with the item's ID and title: "GB-30 · Merge back tooltip". Jackson works each item by talking to its agent.
+
+**If you are an item's agent:**
+
+- You own that one item, from where it stands to its close-out. Start from your hand-off and from `giveback show GB-<n>`.
+- **Record yourself on the item before other work**: `private.agentName` (your thread's title) and `private.agentAddress` (your participant id, the row marked `self` in `j5_list_participants`). The watcher and the dispatcher find you through these fields.
+- Work only your own item. What you learn about another item goes to its agent (`giveback agents` lists them). A new candidate, or an item with no agent, goes to the dispatcher.
+- The watcher messages you when your item's upstream thread has new activity. Act on it as [contributing.md](contributing.md) step 6 says.
+- When the item closes, finish the close-out, tell Jackson once, and stop. Leave your name on the item.
+
+**The dispatcher** is one agent, in the thread titled "Giveback dispatcher". `giveback agents` prints its address. It does not work items. It:
+
+- takes in a new candidate: creates the item, then starts its agent;
+- starts an agent for any open item that has none. `giveback agents` shows these as unassigned. Start nothing while that list says it is incomplete;
+- runs the daily triage-board scan and sends each change to the item's agent;
+- receives the watcher's messages for items that have no agent;
+- checks that the timers ran, that a backup exists, and that every recorded agent still answers.
+
+To start an item's agent, the dispatcher uses `j5_spawn_agent` in this project, with Claude Opus 5.5, the thread title above, and a hand-off as the brief. The hand-off names the item by ID and title, and says where it stands, what waits on Jackson, where its branch, worktree and draft texts are, and what to do next. Local paths belong in the hand-off, never on the dashboard.
+
 ## Asking Jackson
 
 - Name items by ID and title together: "GB-2, Steering could explain itself better".
