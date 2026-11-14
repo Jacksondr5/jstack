@@ -6,14 +6,8 @@ How an item moves from candidate to closed. Dashboard stages are in brackets. Up
 
 Upstream rewrote `CONTRIBUTING.md` on 2026-11-11. Review time is their bottleneck, and they say most outside PRs will be closed. Read it on `main` before you recommend a route. In short:
 
-- **Bug fixes only.** A crash, a regression or a real performance problem is a bug. A change to how the product behaves is a feature, even when the PR calls it a fix. Features, UI overhauls, new providers, and architecture or auth changes are closed automatically.
-- **3 open PRs per person**, unless the person is vouched for in `.github/VOUCHED.td`. Jackson is not. A fourth PR is closed when it opens.
-- **A PR that conflicts** with `main` gets a `needs-rebase` label, and closes after 7 days without activity.
-- **A PR that breaks a rule** gets a notice naming the rule, and closes 72 hours later. A reply or a push in that time sends it back for another look.
-- **The help they ask for first** is finding things they can close: duplicates, bugs that are already fixed, dead PRs. A comment on someone's existing PR, from having tested it, beats a second PR.
-- **Bans** follow automation spam, repeated pings, a fight over a closure, and a second account.
-- **Models.** A PR is closed when any of its code was written by a Gemini model or by Muse Wonder (Muse Wonder Full is accepted). Those models may review a giveback. They never write one.
-- **The team** is the logins in `.github/TRIAGE_EXEMPTIONS.td`.
+- **Bug fixes only.**
+- **3 open PRs per person.** Jackson is not vouched, so his 4th open PR is closed when it opens.
 
 ## 1. Validate [found → validating]
 
