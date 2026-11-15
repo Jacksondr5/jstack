@@ -17,7 +17,7 @@ This skill covers the context you need to perform giveback work from J5 Code to 
 
 1. **Nothing goes upstream without Jackson's approval of the exact text.** This covers PR bodies, issues, comments, discussion posts, replies to bots or maintainers, PR description edits, and pushes that change a PR's meaning. Show the full final text and wait. Approval covers that version only. Only a purely mechanical rebase may be pushed without asking. Upstream maintainers merge; Jackson never does.
 2. **Sign every public post with the model that wrote it**: `_[your model], an AI agent, on Jackson's behalf._`, with your real model's name. A PR also names the harness on its closing line. Write in the first person as Jackson ("I", not "we"). Never call their repo "upstream" in a post: their branch is `main`.
-3. **Post only what adds something.** No bare "+1" comments (a 👍 reaction is fine when Jackson agrees). Never review or comment on other people's PRs unasked. The one exception is a PR that covers our own item, where a comment saying what we saw when we tested it is what upstream asks for; Jackson still approves it. Never ping a maintainer twice about one thing, and never argue a closure: upstream bans for both. Agent-written work done on a person's behalf is welcome there, as long as it stays low-volume and approved.
+3. **Post only what adds something.** No bare "+1" comments (a 👍 reaction is fine when Jackson agrees). Never review or comment on other people's PRs unasked. When you find an open upstream issue or PR related to your item, tell Jackson, and he decides case by case. Never ping a maintainer twice about one thing, and never argue a closure: upstream bans for both. Agent-written work done on a person's behalf is welcome there, as long as it stays low-volume and approved.
 4. **Check before you claim.** Validate against current upstream `main` and record the SHA. Search issues, PRs (open *and* closed, by file and area, not only by linked issue) and discussions for duplicates. This repo sees a lot of traffic, so there's often activity on our giveback items. Reproduce live where you can, and don't rest a claim on a code read, your own or a subagent's. Re-validate anything that has sat for days.
 5. **Evidence comes from T3's own build**, on an isolated upstream dev server (upstream's `test-t3-app` / `test-t3-mobile` skills). Live turns use Claude Haiku or GPT Luna. If a state can't be reached, say so in the post.
 6. **Keep the dashboard current in the same session** as the change it records: stage, links, asks, events. Another agent picks up from what the dashboard says, not from your memory.
@@ -39,6 +39,7 @@ Each open item has its own agent, in its own thread in this project. The thread 
 - takes in a new candidate: creates the item, then starts its agent;
 - starts an agent for any open item that has none. `giveback agents` shows these as unassigned. Start nothing while that list says it is incomplete;
 - runs the daily triage-board scan and sends each change to the item's agent;
+- keeps the queue for our 3 PR slots: it sets each waiting item's `queueRank` in the order Jackson gives, and when a slot frees it tells the agent of the first item in the queue;
 - receives the watcher's messages for items that have no agent;
 - checks that the timers ran, that a backup exists, and that every recorded agent still answers.
 
@@ -49,7 +50,7 @@ To start an item's agent, the dispatcher uses `j5_spawn_agent` in this project, 
 - Name items by ID and title together: "GB-2, Steering could explain itself better".
 - Lead with what needs him. Give each decision a bold **Decision needed:** line, lettered options, and your recommendation. Put one-line summaries of quiet events after it. Tell him about a merge or close once.
 - Open a dashboard ask for every decision that waits on him, and close it when he answers (see [dashboard.md](dashboard.md)).
-- He decides: whether to give an item back and by which route, every upstream text, fixes for bot findings before they are pushed, bug versus security report, stack versus wait, trade-offs, and moves of our items into a triage board's close or noise bucket. You decide how to validate, test, build and review.
+- He decides: whether to give an item back and by which route, every upstream text, fixes for bot findings before they are pushed, bug versus security report, stack versus wait, the order of the PR-slot queue, trade-offs, and moves of our items into a triage board's close or noise bucket. You decide how to validate, test, build and review.
 - A bug in J5's own code goes to a `Jacksondr5/j5code` issue (`gh issue create -R Jacksondr5/j5code`). It is not fixed from here.
 
 ## The lifecycle

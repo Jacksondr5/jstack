@@ -22,16 +22,20 @@ Upstream rewrote `CONTRIBUTING.md` on 2026-11-11. Review time is their bottlenec
   - deliberate upstream design: Ideas material at most.
 
   An upstream choice that harms no upstream user is not a giveback.
+- **Decide: bug or feature.** Use upstream's own test: a change to how the product behaves is a feature, even when the PR calls it a fix. Record the verdict in `changeKind`: `bug`, `behaviour_change` or `feature`. A behaviour change or a feature can become an Ideas discussion or be dropped. It never becomes a PR.
+- **Related open items.** When you find an open upstream issue or PR related to your item, tell Jackson in your recommendation. He decides case by case what we do there, if anything.
 
 ## 2. Recommend a route [deciding, waiting on Jackson]
 
 Open a `route_decision` ask with your recommendation:
 
-- **Direct PR** (`direct_pr`): a small fix for an obvious bug. Upstream asks for no issue here. The PR's Scope section says why it needs none. Each one takes one of our 3 PR slots, so say in your recommendation what is open now and whether this item is worth a slot.
-- **Issue first** (`issue_first`): a larger bug fix. Upstream requires its PR to link the issue that shows the bug. Prepare the PR anyway (step 3) so it can open the moment a maintainer agrees. Never file an issue *alongside* a PR: it reads as two confusingly related items.
-- **Comment** (`comment`): someone else's thread already covers it, and we have new evidence or an offer. When someone's open PR covers our bug, this is the route upstream prefers: test their PR and say what we saw.
+- **Direct PR** (`direct_pr`): a tiny fix for an obvious bug. Upstream asks for no issue here. The PR's Scope section says why it needs none.
+- **Issue first** (`issue_first`): the default for anything beyond a tiny fix. File the issue and prepare the PR (step 3), but open the PR only when a maintainer asks for it, or when nobody has picked the issue up after about a week and Jackson agrees. Upstream allows a larger fix to open with its issue linked. Waiting is still cheaper for us: maintainers have often fixed our issues themselves, which spends no PR slot. Never file an issue *alongside* a PR: it reads as two confusingly related items.
+- **Comment** (`comment`): someone else's thread already covers it, and we have new evidence or an offer.
 - **Ideas discussion** (`discussion`): a feature or an intentional behaviour change. A PR for one is closed unless a maintainer asked for it, and then the PR links the request. File it under Ideas, not Q&A. Calling a behaviour change a bug fix does not exempt it.
 - **Hold / drop** (`hold`, `drop`): the value doesn't justify the cost, or it isn't ours to raise.
+
+**Count the slot cost.** Any route that ends in a PR takes one of our 3 open-PR slots. Run `giveback capacity`, and say in the recommendation what is open and queued now, and why this item is worth a slot ahead of what is queued. Jackson orders the queue by value.
 
 Security-shaped items: check https://t3.codes/security-policy, and keep the item `isPublic: false` until it is filed. 
 
@@ -54,22 +58,23 @@ Open a `text_approval` ask carrying the exact text. When he approves an issue's 
 ## 5. Post [offered]
 
 - Rebase onto the latest `origin/main` and re-run the focused tests.
-- **Check the open PR limit first.** Upstream allows 3 open PRs per contributor who is not vouched for, and a bot closes a fourth within seconds (CONTRIBUTING "3 open PRs per person"). Run `gh pr list -R pingdotgg/t3code --author Jacksondr5 --state open`. If 3 are open, don't post: put the item in `held` (`waitingOn: maintainer`) and tell the dispatcher, who orders the queue for the next free slot. A PR the bot closed can be reopened once a slot frees.
+- **Check the open PR limit first.** Run `gh pr list -R pingdotgg/t3code --author Jacksondr5 --state open`. If 3 are open, don't post: put the item in `held` with `waitingOn: pr_slot`, and tell the dispatcher. This is the one use of `held` that needs no `covering` or `base` link.
+- **Waiting for a slot.** The dispatcher sets the item's `queueRank` in the order Jackson gives. A slot frees when one of our PRs merges or closes. The dispatcher learns that from the watcher, which tells it whenever one of our PRs closes or merges, and from its daily check. It then tells the agent of the first item in the queue, and that agent rebases, re-runs the focused tests, and opens its PR, or reopens the one the bot closed. Never open or reopen before the dispatcher says so.
 - Open the PR: `gh pr create -R pingdotgg/t3code --head Jacksondr5:<branch>`. For an issue, use upstream's issue template.
 - In the same session:
   - set the item's `primary` link (`ownership: ours`) and stage `offered`;
-  - add an event;
+  - add a `posted` event with the post's URL. Every upstream post gets one: a PR, an issue, a comment, a discussion post, a reply. The dashboard counts them per week.
 
 ## 6. Babysit [offered]
 
-- **Review bots count.** Macroscope's approvability verdict gates upstream's deeper review, and "Needs Human Approval" is a gate only a maintainer can clear. CodeRabbit's actionable findings and Devin's reviews also count. For each finding: verify it against the source, prepare the fix on the branch, then bring Jackson the finding, your verdict and the change *before* you push or reply. False positives get a reasoned reply, once he approves it.
+- **Review bots count.** Macroscope comments on nearly every PR. Its approval is good news. "Needs Human Approval", or comments from it, mean we adjust the PR or answer its comments. CodeRabbit's actionable findings and Devin's reviews also count. For each finding: verify it against the source, prepare the fix on the branch, then bring Jackson the finding, your verdict and the change *before* you push or reply. False positives get a reasoned reply, once he approves it.
 - **Failing checks** get the same treatment as bot findings.
-- **A `needs-rebase` label** starts a 7-day clock. Rebase within a day or two. A purely mechanical rebase needs no approval. Anything more goes to Jackson first.
-- **A notice that the PR breaks a rule** starts a 72-hour clock. Tell Jackson at once, with the rule it names, your reading of whether it is right, and the reply or push you propose. Either one, inside the 72 hours, sends the PR back for another look.
+- **A `needs-rebase` label** starts a 7-day clock, which the dashboard shows on the PR. Rebase within a day or two. A purely mechanical rebase needs no approval. Anything more goes to Jackson first.
+- **A notice that the PR breaks a rule** (the `triage:closing` label) starts a 72-hour clock, which the dashboard also shows. Tell Jackson at once, with the rule it names, your reading of whether it is right, and the reply or push you propose. Either one, inside the 72 hours, sends the PR back for another look.
 - **A closure** is never argued. If the reason can be fixed, bring Jackson the fix and a comment, or a focused replacement PR that links the old one.
 - **A maintainer's question** goes to Jackson as a `maintainer_question` ask.
 - **A maintainer's nod** on an offered fix: with text approved in advance, rebase, re-test, open the PR, then tell him. Without it, bring him the ready PR and wait. Speed matters: be ready to open a PR as soon as a maintainer agrees.
-- **Someone else opens a PR** for our item: don't open ours. Compare their approach with ours, and move the item to `held` with a `covering` link. Upstream asks people in this position to react, test the PR and say what they saw. So when it is worth it, test their PR on an isolated upstream build and bring Jackson a 👍 or a short comment with the result.
+- **Someone else opens a PR** for our item: don't open ours. Compare their approach with ours, move the item to `held` with a `covering` link, and tell Jackson what you found. He decides whether we react or comment there.
 - **Rebases:** force-push with lease only after re-checking the remote head, and only for a purely mechanical change. Additions go on as new commits. GitHub stacks can't cross forks, so wait for an outsider's base PR to merge rather than stacking on it.
 - **Third-party noise** (cross-links, +1s from others): one line in your report, or nothing.
 
