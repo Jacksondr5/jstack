@@ -108,6 +108,7 @@ What we do:
 
 - **While a PR carries `takeover:in-progress` or `takeover:ready`, never push to its branch,** not even a mechanical rebase, and do not reply on it. A push from anyone else stops the pipeline. Check the labels before any push: `gh pr view <n> -R pingdotgg/t3code --json labels`.
 - **After `takeover:blocked`, a closure by the pipeline, or a pipeline comment that asks for steps:** bring Jackson the reason and a proposed reply or fix. He approves it before anything goes up.
+- **A `stopped-moved` stop is not always a real outside push.** On 2026-11-15 the pipeline pushed its merge of `main` to one of our fork branches, GitHub never moved the PR's head to that commit, and the pipeline then stopped with `factory:stopped-moved`, as if someone else had pushed. Before you accept such a stop, compare the fork branch's tip (`git ls-remote j5 refs/heads/<branch>`) with the PR's head (`gh pr view <n> -R pingdotgg/t3code --json headRefOid`). If they differ, the PR's head is stale on GitHub's side. Bring Jackson both SHAs and what you propose. Push nothing to repair it without his say.
 - **`takeover:needs-julius` needs nothing from us.** The PR still holds one of our 3 slots until it merges or closes.
 - **Keep the PR body's evidence complete** (step 3). The pipeline captures its own, but its most common stop is that it could not prove the fix, and our before and after captures and platform notes may be what lets it.
 - The dashboard shows the label on the PR as GitHub has it.
