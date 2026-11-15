@@ -23,7 +23,7 @@ This skill covers the context you need to perform giveback work from J5 Code to 
 6. **Keep the dashboard current in the same session** as the change it records: stage, links, asks, events. Another agent picks up from what the dashboard says, not from your memory.
 7. **Stay within the posting limits.** They are Jackson's own, set on 2026-11-14, and he may change them. `giveback capacity` shows each count beside its limit. Check it before every post. The counts are read from GitHub and cover his whole account in the repository: every PR, issue, comment, review and discussion post, including ones made outside the agents.
    - **Open PRs:** never more than 3. Check `giveback capacity` and `gh pr list` before every PR.
-   - **New items:** at most 2 new PRs and 2 new issues in 7 days. A PR counts once, when it is created. Reopening one that the limit bot closed is not a new PR; it counts as one post in the totals below.
+   - **New items:** at most 2 new PRs and 2 new issues in 7 days. A PR counts once, when it is created. The replacement of a PR that the limit bot closed is not a new PR; it counts as one post in the totals below.
    - **All upstream posts together:** about 10 in 7 days, and no more than 3 in 24 hours.
    - **Per item:** comment only when there is something new, such as new evidence or an answer to a maintainer's question. No nudges and no pings.
    - **A post carries the one signature line** and nothing else of ours: no task IDs, worker names, UUIDs, HTML markers or per-reply banners.
