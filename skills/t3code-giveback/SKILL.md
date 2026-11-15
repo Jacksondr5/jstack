@@ -21,6 +21,15 @@ This skill covers the context you need to perform giveback work from J5 Code to 
 4. **Check before you claim.** Validate against current upstream `main` and record the SHA. Search issues, PRs (open *and* closed, by file and area, not only by linked issue) and discussions for duplicates. This repo sees a lot of traffic, so there's often activity on our giveback items. Reproduce live where you can, and don't rest a claim on a code read, your own or a subagent's. Re-validate anything that has sat for days.
 5. **Evidence comes from T3's own build**, on an isolated upstream dev server (upstream's `test-t3-app` / `test-t3-mobile` skills). Live turns use Claude Haiku or GPT Luna. If a state can't be reached, say so in the post.
 6. **Keep the dashboard current in the same session** as the change it records: stage, links, asks, events. Another agent picks up from what the dashboard says, not from your memory.
+7. **Stay within the posting limits.** They are Jackson's own, set on 2026-11-14, and he may change them. `giveback capacity` shows each count beside its limit. Check it before every post. The counts are read from GitHub and cover his whole account in the repository: every PR, issue, comment, review and discussion post, including ones made outside the agents.
+   - **Open PRs:** never more than 3. Check `giveback capacity` and `gh pr list` before every PR.
+   - **New items:** at most 2 new PRs and 2 new issues in 7 days. A PR counts once, when it is created. Reopening one that the limit bot closed is not a new PR; it counts as one post in the totals below.
+   - **All upstream posts together:** about 10 in 7 days, and no more than 3 in 24 hours.
+   - **Per item:** comment only when there is something new, such as new evidence or an answer to a maintainer's question. No nudges and no pings.
+   - **A post carries the one signature line** and nothing else of ours: no task IDs, worker names, UUIDs, HTML markers or per-reply banners.
+   - **No bursts.** File an issue only for a bug with real impact on users.
+
+   Why: upstream's three sanctions so far each followed a burst 50 to 130 times our busiest day. One was about 140 PRs in two weeks, mostly features, with pings after closures. One was about 250 templated issues in a day. One was about 250 unsolicited reviews in five days, with task IDs in them. Steady, low volume has not been sanctioned: one of those accounts filed up to 16 issues a week for months without trouble. We average about 7 posts a week.
 
 ## One agent per item
 

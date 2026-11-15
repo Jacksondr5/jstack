@@ -13,7 +13,7 @@ $GB show GB-12          # one item: links, asks, events, private fields
 $GB export --out <scratchpad>/export.json   # everything
 $GB watchlist           # every link on an item that is not closed
 $GB agents              # every item that is not closed, with its agent, and the dispatcher's address
-$GB capacity            # our open PRs against upstream's limit, the queue for a slot, and posts per week
+$GB capacity            # our open PRs against upstream's limit, the queue for a slot, and our posts against Jackson's limits
 $GB upsert item.json    # create or change items; omitted fields keep their value
 $GB ask open|close ...  # asks of Jackson
 $GB event add ...       # history lines
@@ -32,7 +32,7 @@ It reads its URL and secrets from `j5-giveback/env` on its own. Never print, cop
 - **An item's agent is recorded on it**, in `private.agentName` and `private.agentAddress`. Set both in one upsert when you take an item, and again if the item moves to another agent. `giveback agents` reads them back, and the watcher sends to the address.
 - **`held` is a side stop**, for a valid item waiting on someone else's upstream PR. Give it a `covering` or `base` link. It is never a way to park an item that waits on Jackson. The one other use is an item with approved text waiting for one of our 3 PR slots: `held` with `waitingOn: pr_slot`, no link needed. `waitingOn: maintainer` means a maintainer owes a reply, and nothing else.
 - **Every item gets a `changeKind`** at validation: `bug`, `behaviour_change` or `feature`.
-- **Every upstream post gets a `posted` event** with its URL. The weekly post count reads these.
+- **Every upstream post gets a `posted` event** with its URL. It is the item's history. The post counts come from GitHub; the events are what they fall back to when GitHub cannot be read.
 - **The refresh never moves a stage.** When a link merges, closes or starts failing CI, the item gets an "upstream changed" marker. Decide the new stage, and send `clearUpstreamChange: true` with that change.
 
 ## Background jobs (systemd user timers)
