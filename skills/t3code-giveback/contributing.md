@@ -58,7 +58,8 @@ Open a `text_approval` ask carrying the exact text. When he approves an issue's 
 ## 5. Post [offered]
 
 - Rebase onto the latest `origin/main` and re-run the focused tests.
-- **Check the open PR limit first.** Run `gh pr list -R pingdotgg/t3code --author Jacksondr5 --state open`. If 3 are open, don't post: put the item in `held` with `waitingOn: pr_slot`, and tell the dispatcher. This is the one use of `held` that needs no `covering` or `base` link.
+- **Check the posting limits first** (standing rule 7): `giveback capacity` shows the posts of the last 24 hours and 7 days, and the new PRs and issues, each beside its limit. If this post would pass one, wait, and tell Jackson if it cannot wait.
+- **Then the open PR limit.** Run `gh pr list -R pingdotgg/t3code --author Jacksondr5 --state open`. If 3 are open, don't post: put the item in `held` with `waitingOn: pr_slot`, and tell the dispatcher. This is the one use of `held` that needs no `covering` or `base` link.
 - **Waiting for a slot.** The dispatcher sets the item's `queueRank` in the order Jackson gives. A slot frees when one of our PRs merges or closes. The dispatcher learns that from the watcher, which tells it whenever one of our PRs closes or merges, and from its daily check. It then tells the agent of the first item in the queue, and that agent rebases, re-runs the focused tests, and opens its PR, or reopens the one the bot closed. Never open or reopen before the dispatcher says so.
 - Open the PR: `gh pr create -R pingdotgg/t3code --head Jacksondr5:<branch>`. For an issue, use upstream's issue template.
 - In the same session:

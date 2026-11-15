@@ -13,7 +13,7 @@ $GB show GB-12          # one item: links, asks, events, private fields
 $GB export --out <scratchpad>/export.json   # everything
 $GB watchlist           # every link on an item that is not closed
 $GB agents              # every item that is not closed, with its agent, and the dispatcher's address
-$GB capacity            # our open PRs against upstream's limit, the queue for a slot, and posts per week
+$GB capacity            # our open PRs against upstream's limit, the queue for a slot, and our posts against Jackson's limits
 $GB upsert item.json    # create or change items; omitted fields keep their value
 $GB ask open|close ...  # asks of Jackson
 $GB event add ...       # history lines
