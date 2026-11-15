@@ -61,10 +61,25 @@ Open a `text_approval` ask carrying the exact text. When he approves an issue's 
 - **Check the posting limits first** (standing rule 7): `giveback capacity` shows the posts of the last 24 hours and 7 days, and the new PRs and issues, each beside its limit. It counts from GitHub, so it includes posts no agent recorded. If `posts.source` is `events`, GitHub could not be read and the counts may be low: check his recent activity on GitHub yourself before posting. If this post would pass a limit, wait, and tell Jackson if it cannot wait.
 - **Then the open PR limit.** Run `gh pr list -R pingdotgg/t3code --author Jacksondr5 --state open`. If 3 are open, don't post: put the item in `held` with `waitingOn: pr_slot`, and tell the dispatcher. This is the one use of `held` that needs no `covering` or `base` link.
 - **Waiting for a slot.** The dispatcher sets the item's `queueRank` in the order Jackson gives. A slot frees when one of our PRs merges or closes. The dispatcher learns that from the watcher, which tells it whenever one of our PRs closes or merges, and from its daily check. It then tells the agent of the first item in the queue, and that agent rebases, re-runs the focused tests, and opens its PR, or reopens the one the bot closed. Never open or reopen before the dispatcher says so.
-- Open the PR: `gh pr create -R pingdotgg/t3code --head Jacksondr5:<branch>`. For an issue, use upstream's issue template.
+- Open the PR: `gh pr create -R pingdotgg/t3code --head Jacksondr5:<branch>`. An issue is filed differently: see "Filing an issue" below.
 - In the same session:
   - set the item's `primary` link (`ownership: ours`) and stage `offered`;
   - add a `posted` event with the post's URL. Every upstream post gets one: a PR, an issue, a comment, a discussion post, a reply. The dashboard counts them per week.
+
+### Filing an issue
+
+Upstream asks for bug reports through its own triage flow: `npx t3 triage` opens an agent session that follows `.github/triage/PLAYBOOK.md` and files with the "Triage report" form (`.github/ISSUE_TEMPLATE/via-triage.yml`, label `via-triage`). We cannot run that session, and our bugs are reproduced on T3's own build, not found on a broken install. So we follow the playbook and the form ourselves.
+
+- **Before drafting,** read the current `PLAYBOOK.md` on upstream `main` and follow the steps that apply to us:
+  - check upstream for duplicates, and for a fix in a release newer than the one the bug was seen on (its step 6);
+  - when an existing issue matches, comment there with fresh evidence in place of a new issue (its step 10), if Jackson agrees;
+  - redact secrets and home directory paths from everything quoted (its step 9).
+- **Write the issue in the form's fields:** What happened, Diagnosis, Steps to reproduce, Version, Environment, Evidence, Related issues, Fix applied or workaround, and Filed by. The title is plain and specific, with no prefix.
+- **Version** is what we reproduced on: the T3 release, or the `main` SHA.
+- **Filed by** names the model and the agent, and says plainly what we did. For example: "Claude Opus 5.5 (Claude Code), on Jackson's behalf. Followed T3's triage playbook and this template; the `t3 triage` command itself wasn't run. Reproduced on T3's own build at `<version or SHA>`." The usual signature line still applies.
+- **Jackson submits it, not us.** Build the pre-filled URL the playbook describes for someone without triage permission: `https://github.com/pingdotgg/t3code/issues/new?template=via-triage.yml&title=...`, with one URL-encoded parameter for each field id (`what-happened`, `diagnosis`, `steps`, `version`, `environment`, `evidence`, `related`, `workaround`, `agent`). Keep the whole URL under 6,000 characters, and give him any text that had to be left out so he can paste it in. He reviews the form in his browser and clicks Submit, and the form applies `via-triage`. Never post an issue with `gh issue create`.
+- **Screenshots** cannot ride in the URL. Tell Jackson which images to drag into the issue once it exists.
+- After he submits, set the item's `primary` link and add the `posted` event with the issue's URL.
 
 ## 6. Babysit [offered]
 
