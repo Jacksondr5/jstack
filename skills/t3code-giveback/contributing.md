@@ -57,7 +57,7 @@ Open a `text_approval` ask carrying the exact text. When he approves an issue's 
 
 ## 5. Post [offered]
 
-- Rebase onto the latest `origin/main` and re-run the focused tests.
+- Rebase onto the latest `origin/main` and re-run the focused tests. Before any push to the branch of a PR that is already open, check its labels: see the landing pipeline in step 6.
 - **Check the posting limits first** (standing rule 7): `giveback capacity` shows the posts of the last 24 hours and 7 days, and the new PRs and issues, each beside its limit. It counts from GitHub, so it includes posts no agent recorded. If `posts.source` is `events`, GitHub could not be read and the counts may be low: check his recent activity on GitHub yourself before posting. If this post would pass a limit, wait, and tell Jackson if it cannot wait.
 - **Then the open PR limit.** Run `gh pr list -R pingdotgg/t3code --author Jacksondr5 --state open`. If 3 are open, don't post: put the item in `held` with `waitingOn: pr_slot`, and tell the dispatcher. This is the one use of `held` that needs no `covering` or `base` link.
 - **Waiting for a slot.** The dispatcher sets the item's `queueRank` in the order Jackson gives. A slot frees when one of our PRs merges or closes. The dispatcher learns that from the watcher, which tells it whenever one of our PRs closes or merges, and from its daily check. It then tells the agent of the first item in the queue, and that agent rebases, re-runs the focused tests, and opens its PR, or reopens the one the bot closed. Never open or reopen before the dispatcher says so.
@@ -70,14 +70,32 @@ Open a `text_approval` ask carrying the exact text. When he approves an issue's 
 
 - **Review bots count.** Macroscope comments on nearly every PR. Its approval is good news. "Needs Human Approval", or comments from it, mean we adjust the PR or answer its comments. CodeRabbit's actionable findings and Devin's reviews also count. For each finding: verify it against the source, prepare the fix on the branch, then bring Jackson the finding, your verdict and the change *before* you push or reply. False positives get a reasoned reply, once he approves it.
 - **Failing checks** get the same treatment as bot findings.
-- **A `needs-rebase` label** starts a 7-day clock, which the dashboard shows on the PR. Rebase within a day or two. A purely mechanical rebase needs no approval. Anything more goes to Jackson first.
+- **A `needs-rebase` label** starts a 7-day clock, which the dashboard shows on the PR. Rebase within a day or two, unless the landing pipeline has the PR (below). A purely mechanical rebase needs no approval. Anything more goes to Jackson first.
 - **A notice that the PR breaks a rule** (the `triage:closing` label) starts a 72-hour clock, which the dashboard also shows. Tell Jackson at once, with the rule it names, your reading of whether it is right, and the reply or push you propose. Either one, inside the 72 hours, sends the PR back for another look.
 - **A closure** is never argued. If the reason can be fixed, bring Jackson the fix and a comment, or a focused replacement PR that links the old one.
 - **A maintainer's question** goes to Jackson as a `maintainer_question` ask.
 - **A maintainer's nod** on an offered fix: with text approved in advance, rebase, re-test, open the PR, then tell him. Without it, bring him the ready PR and wait. Speed matters: be ready to open a PR as soon as a maintainer agrees.
 - **Someone else opens a PR** for our item: don't open ours. Compare their approach with ours, move the item to `held` with a `covering` link, and tell Jackson what you found. He decides whether we react or comment there.
-- **Rebases:** force-push with lease only after re-checking the remote head, and only for a purely mechanical change. Additions go on as new commits. GitHub stacks can't cross forks, so wait for an outsider's base PR to merge rather than stacking on it.
+- **Rebases:** never while the PR carries `takeover:in-progress` or `takeover:ready`. Otherwise force-push with lease only after re-checking the remote head, and only for a purely mechanical change. Additions go on as new commits. GitHub stacks can't cross forks, so wait for an outsider's base PR to merge rather than stacking on it.
 - **Third-party noise** (cross-links, +1s from others): one line in your report, or nothing.
+
+### Upstream's landing pipeline ("takeover")
+
+Since about 2026-11-13 most outside PRs land through an automated pipeline that runs under a maintainer's account. This is what it did when we looked on 2026-11-15. It is new and nothing in their repository defines it, so expect it to change: trust the PR's labels over this page, and tell the dispatcher when what you see differs.
+
+- `takeover:in-progress`: the pipeline merges `main` into our branch, may add commits, reviews the change and captures its own evidence. This takes about half an hour.
+- Then one of three: `takeover:ready`, merged within about a minute; `takeover:needs-julius`, waiting on a maintainer's decision, usually with no comment; or `takeover:blocked`, with a comment that says why it stopped.
+- It can also close a PR itself: when the bug did not reproduce without the change, when the PR is redundant or a duplicate, or when it was rebuilt as a maintainer's PR with our commits kept.
+- Its comments end with a marker such as `<!-- factory:stopped-moved -->`. The watcher's message shows these as "pipeline comment", with the marker.
+- Credit is kept: the squash commit's author is the contributor.
+
+What we do:
+
+- **While a PR carries `takeover:in-progress` or `takeover:ready`, never push to its branch,** not even a mechanical rebase, and do not reply on it. A push from anyone else stops the pipeline. Check the labels before any push: `gh pr view <n> -R pingdotgg/t3code --json labels`.
+- **After `takeover:blocked`, a closure by the pipeline, or a pipeline comment that asks for steps:** bring Jackson the reason and a proposed reply or fix. He approves it before anything goes up.
+- **`takeover:needs-julius` needs nothing from us.** The PR still holds one of our 3 slots until it merges or closes.
+- **Keep the PR body's evidence complete** (step 3). The pipeline captures its own, but its most common stop is that it could not prove the fix, and our before and after captures and platform notes may be what lets it.
+- The dashboard shows the label on the PR as GitHub has it.
 
 ## 7. Close out [closed]
 
