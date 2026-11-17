@@ -33,6 +33,20 @@ this repository do not reach the installed copy. Run the same `add` command
 again to pick them up. `npx skills update -g` refreshes GitHub installs, but it
 skips local-path installs.
 
+### J5 Code
+
+This repository is a J5 Code skill catalog: [`catalog.yaml`](catalog.yaml)
+sorts the skills into groups. In J5 Code, open **Settings → Skills**, set the
+catalog source to `https://github.com/Jacksondr5/jstack.git` or to the absolute
+path of a local clone, pick the groups you want and apply. J5 Code links the
+skills into `~/.agents/skills/` and `~/.claude/skills/` rather than copying
+them, so a local clone's edits reach agents right away. **Update** pulls a
+GitHub source. `take-the-wheel` isn't in the catalog; install it with the
+`skills` CLI.
+
+J5 Code won't replace a skill folder the `skills` CLI installed. Remove those
+copies first, for example `npx skills remove -g -s council`, then apply.
+
 ## Credits
 
 `council` and `take-the-wheel` are adapted from Theo Browne's

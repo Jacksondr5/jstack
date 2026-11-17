@@ -1,0 +1,13 @@
+# J5 Code skill catalog. Settings → Skills installs the groups you pick.
+# Maintenance rules are in AGENTS.md.
+# Not installed from the catalog: take-the-wheel
+groups:
+  review:
+    description: Get a change reviewed by a council of models until they are satisfied.
+    skills: [council]
+  thread-helpers:
+    description: Catch up on a long thread, or go through a long list of decisions one at a time.
+    skills: [catch-up, one-by-one]
+  t3code-giveback:
+    description: For agents giving J5 Code fixes back to T3 Code. Loads itself in a pingdotgg/t3code checkout.
+    skills: [t3code-giveback]
