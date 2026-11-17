@@ -1,9 +1,10 @@
 # J5 Code skill catalog. Settings → Skills installs the groups you pick.
 # Maintenance rules are in AGENTS.md.
+# Not installed from the catalog: take-the-wheel
 groups:
-  core:
-    description: Hand an agent the work end to end, and get its result reviewed by a council of models.
-    skills: [council, take-the-wheel]
+  review:
+    description: Get a change reviewed by a council of models until they are satisfied.
+    skills: [council]
   thread-helpers:
     description: Catch up on a long thread, or go through a long list of decisions one at a time.
     skills: [catch-up, one-by-one]
