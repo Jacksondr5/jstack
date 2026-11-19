@@ -42,6 +42,7 @@ Security-shaped items: check https://t3.codes/security-policy, and keep the item
 ## 3. Prepare [preparing]
 
 - **Branch** from fresh `origin/main` in your J5 worktree, named `fix/<what-it-fixes>`. One underlying problem per PR.
+- **Shape it for the landing pipeline** (step 6). It picks up PRs that are small and mergeable; it has never taken a draft or an XL one. So: a diff of XS to M, and a reproduction the pipeline can run on the base commit by itself, without special hardware or a second account. Its two most common stops are that it could not prove the fix and that it found no bug on the base commit.
 - **Push** to J5's GitHub fork, which is the fork of t3code: `git push j5 HEAD:refs/heads/<branch>`. The `j5` remote is `https://github.com/Jacksondr5/j5code.git`; add it if it is missing. A builder subagent commits locally, and the agent that owns the item pushes. expo/expo-device-hub work uses `Jacksondr5/expo-device-hub`.
 - **Tests:** focused tests that fail on `main` and pass on the branch, following upstream's AGENTS.md testing rules. Before posting, run `vp run check:changed` and `vp test run <files>`. Revert incidental lockfile churn, and keep dev homes and scratch out of the diff. Use fnm's Node, not an ad-hoc one.
 - **Evidence:** UI changes need before and after captures on matched data, viewport and theme.
@@ -102,20 +103,26 @@ Upstream asks for bug reports through its own triage flow: `npx t3 triage` opens
 
 ### Upstream's landing pipeline ("takeover")
 
-Since about 2026-11-13 most outside PRs land through an automated pipeline that runs under a maintainer's account. This is what it did when we looked on 2026-11-15. It is new and nothing in their repository defines it, so expect it to change: trust the PR's labels over this page, and tell the dispatcher when what you see differs.
+Since about 2026-11-13 most outside PRs land through an automated pipeline that runs under a maintainer's account. This is what it did when we last looked, on 2026-11-18. Nothing in their repository defines it, so expect it to change: trust the PR's labels over this page, and tell the dispatcher when what you see differs.
 
-- `takeover:in-progress`: the pipeline merges `main` into our branch, may add commits, reviews the change and captures its own evidence. This takes about half an hour.
-- Then one of three: `takeover:ready`, merged within about a minute; `takeover:needs-julius`, waiting on a maintainer's decision, usually with no comment; or `takeover:blocked`, with a comment that says why it stopped.
-- It can also close a PR itself: when the bug did not reproduce without the change, when the PR is redundant or a duplicate, or when it was rebuilt as a maintainer's PR with our commits kept.
-- Its comments end with a marker such as `<!-- factory:stopped-moved -->`. The watcher's message shows these as "pipeline comment", with the marker.
+- **Pickup.** It labels a PR within minutes of it opening, and rarely after about 3 hours. If a PR has no takeover label 3 hours after it opened, it is not going to be picked up; tell the dispatcher.
+- `takeover:in-progress`: the pipeline merges `main` into our branch, may add commits, reviews the change and runs its own proof. This usually takes 30 minutes to 2 hours.
+- Then one of three, each about a quarter to a half of the time: `takeover:ready`, usually merged within minutes; `takeover:needs-julius`, waiting on a maintainer's decision, usually with no comment; or `takeover:blocked`, with a comment that says why it stopped.
+- **`ready` is not final.** About 1 in 10 `ready` PRs did not merge, mostly because the author pushed after `ready`, which sends it to `blocked`.
+- **`blocked` is not final either.** A maintainer re-runs blocked PRs in batches, often with no word from the author, and some of those then merge.
+- It can also close a PR itself: when the bug did not reproduce without the change, when the PR is redundant or a duplicate, when the fix is already on `main`, or when it was rebuilt as a maintainer's PR with our commits kept.
+- Its comments end with a marker such as `<!-- factory:stopped-moved -->`. The watcher's message shows these as "pipeline comment", with the marker. A stop comment asks nothing of the author; it ends "It stays open for a person to finish or close."
 - Credit is kept: the squash commit's author is the contributor.
+- A second lane exists: another maintainer sometimes merges PRs directly, in batches, mostly from vouched authors.
 
 What we do:
 
 - **While a PR carries `takeover:in-progress` or `takeover:ready`, never push to its branch,** not even a mechanical rebase, and do not reply on it. A push from anyone else stops the pipeline. Check the labels before any push: `gh pr view <n> -R pingdotgg/t3code --json labels`.
-- **After `takeover:blocked`, a closure by the pipeline, or a pipeline comment that asks for steps:** bring Jackson the reason and a proposed reply or fix. He approves it before anything goes up.
-- **A `stopped-moved` stop is not always a real outside push.** On 2026-11-15 the pipeline pushed its merge of `main` to one of our fork branches, GitHub never moved the PR's head to that commit, and the pipeline then stopped with `factory:stopped-moved`, as if someone else had pushed. Before you accept such a stop, compare the fork branch's tip (`git ls-remote j5 refs/heads/<branch>`) with the PR's head (`gh pr view <n> -R pingdotgg/t3code --json headRefOid`). If they differ, the PR's head is stale on GitHub's side. Bring Jackson both SHAs and what you propose. Push nothing to repair it without his say. The repair that worked was to close the PR and reopen it: the head moved to the branch's tip at once and the checks ran. Pushing the same tip again did not help. Jackson approves the close and reopen, and it counts as one post. It works only on a PR we closed ourselves: one the limit bot closed cannot be reopened.
-- **`takeover:needs-julius` needs nothing from us.** The PR still holds one of our 3 slots until it merges or closes.
+- **After `takeover:blocked`, wait by default.** Blocked PRs get re-run without a reply. Bring Jackson a proposed reply or fix only when we can fix what the stop names, such as a reproduction or captures for "could not prove", or steps for "no bug on base". He approves it before anything goes up.
+- **After a closure by the pipeline, or a pipeline comment that asks for steps:** bring Jackson the reason and a proposed reply or fix. He approves it before anything goes up.
+- **`takeover:in-progress` for more than 3 hours** is stuck: most runs finish within 2, and the ones still going after a day have never finished. Tell the dispatcher; push and post nothing.
+- **A `stopped-moved` stop is not always a real outside push.** On 2026-11-15 the pipeline pushed its merge of `main` to one of our fork branches, GitHub never moved the PR's head to that commit, and the pipeline then stopped with `factory:stopped-moved`, as if someone else had pushed. Before you accept such a stop, check whether the head the comment names is the pipeline's own commit, and compare the fork branch's tip (`git ls-remote j5 refs/heads/<branch>`) with the PR's head (`gh pr view <n> -R pingdotgg/t3code --json headRefOid`). If they differ, the PR's head is stale on GitHub's side. Bring Jackson both SHAs and what you propose. Push nothing to repair it without his say. The repair that worked was to close the PR and reopen it: the head moved to the branch's tip at once and the checks ran. Pushing the same tip again did not help. Jackson approves the close and reopen, and it counts as one post. It works only on a PR we closed ourselves: one the limit bot closed cannot be reopened.
+- **`takeover:needs-julius` needs nothing from us.** Most wait days or longer. The PR still holds one of our 3 slots until it merges or closes.
 - **Keep the PR body's evidence complete** (step 3). The pipeline captures its own, but its most common stop is that it could not prove the fix, and our before and after captures and platform notes may be what lets it.
 - The dashboard shows the label on the PR as GitHub has it.
 
