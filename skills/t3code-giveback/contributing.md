@@ -14,6 +14,7 @@ Upstream rewrote `CONTRIBUTING.md` on 2026-11-11. Review time is their bottlenec
 - Read the code on fresh upstream `main` (`git fetch origin`) and record the SHA in `lastValidatedSha` with a one-line `validationVerdict`.
 - Search issues, PRs and discussions for duplicates. Include closed PRs, since GitHub hides commits pushed after a PR closes, and search PRs by file and area too, since some fixes link no issue. Read the PR that introduced the behaviour, in case it was a deliberate choice.
 - Reproduce it live on an isolated upstream dev server.  Take advantage of all connected environments as needed.
+  - Start it with `env -u T3CODE_PORT -u T3CODE_HOST -u T3CODE_HOME -u J5CODE_HOME vp run dev`. Agent shells inherit the live install's port and home. Current upstream ignores them in a worktree, but an older base commit's dev runner takes the live port.
 - Possible verdicts:
   - still real: go to step 2;
   - covered by someone's open PR: `held`, with a `covering` link;
