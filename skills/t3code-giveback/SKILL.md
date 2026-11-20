@@ -45,7 +45,7 @@ Each open item has its own agent, in its own thread in this project. The thread 
 
 **The dispatcher** is one agent, in the thread titled "Giveback dispatcher". `giveback agents` prints its address. It does not work items. It:
 
-- takes in a new candidate: creates the item, then starts its agent;
+- takes in a new candidate. First a subagent checks the code on fresh upstream `main` and the recently merged and open PRs touching it, because J5 runs an older upstream release and many of its finds are already fixed. If it is fixed, no item is made: the J5 follow-up goes straight to the advance tracker issue on `Jacksondr5/j5code`. If an open PR covers it, the item is made as `held` with a `covering` link. Otherwise the dispatcher creates the item, then starts its agent;
 - starts an agent for any open item that has none. `giveback agents` shows these as unassigned. Start nothing while that list says it is incomplete;
 - runs the daily triage-board scan and sends each change to the item's agent;
 - keeps the queue for our 3 PR slots: it sets each waiting item's `queueRank` in the order Jackson gives, and when a slot frees it tells the agent of the first item in the queue;
