@@ -19,8 +19,8 @@ after them.
 ## Repositories and data
 
 - **Keep my hosts, paths, ports and devices out of shared repos.** They go in my
-  machine-local config and in the machine-local part of these rules. Scripts
-  read config and use neutral defaults.
+  private rules and my machine-local config. Scripts read config and use
+  neutral defaults.
 - **Nothing from real data goes into commits,** test strings and examples
   included. Use invented or seed text.
 

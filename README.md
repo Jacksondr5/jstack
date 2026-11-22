@@ -52,16 +52,26 @@ copies first, for example `npx skills remove -g -s council`, then apply.
 ## Rules for every agent
 
 [`global/AGENTS.md`](global/AGENTS.md) holds my preferences for every agent, on
-every machine. Each machine keeps its own rules (hosts, ports, local services)
-in `~/.config/jstack/AGENTS.local.md`. [`global/install.sh`](global/install.sh)
-joins the two into `~/.codex/AGENTS.md`, which Codex reads and Claude Code
-includes from `~/.claude/CLAUDE.md` with `@~/.codex/AGENTS.md`. Rerun it after
-changing either file. It keeps a hand-written `~/.codex/AGENTS.md` as a backup
-before replacing it.
+every machine. This repository is public, so it holds only rules that make sense
+to anyone. The rest lives in a private companion repository:
 
-This repository is public, so `global/AGENTS.md` holds only rules that make
-sense to anyone. Anything about my machines, accounts or work goes in the local
-file.
+- `personal.md`: rules for my own projects, the same on every machine;
+- `machines/<host>.md`: one machine's hosts, ports, devices and paths.
+
+[`global/install.sh`](global/install.sh) joins `global/AGENTS.md`, the private
+`personal.md`, this machine's `machines/<host>.md` and, if present,
+`~/.config/jstack/AGENTS.local.md` (for what must not leave the machine) into
+`~/.codex/AGENTS.md`. Codex reads that file, and Claude Code includes it from
+`~/.claude/CLAUDE.md` with `@~/.codex/AGENTS.md`.
+
+```bash
+global/install.sh                      # private clone next to this one, machine = hostname -s
+global/install.sh --private <dir> --machine <name>
+```
+
+Rerun it after changing any of those files. It keeps a hand-written
+`~/.codex/AGENTS.md` as a backup before replacing it. Without a private clone it
+installs the general rules alone.
 
 ## Credits
 
