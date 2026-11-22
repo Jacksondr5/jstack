@@ -2,8 +2,7 @@
 # Builds ~/.codex/AGENTS.md from, in order:
 #   1. this repository's global/AGENTS.md (general rules, public);
 #   2. <private>/personal.md (your rules for your own projects);
-#   3. <private>/machines/<machine>.md (this machine's facts), if present;
-#   4. ~/.config/jstack/AGENTS.local.md (never leaves the machine), if present.
+#   3. <private>/machines/<machine>.md (this machine's facts), if present.
 # Claude Code reads the same file through `@~/.codex/AGENTS.md` in ~/.claude/CLAUDE.md.
 #
 # Usage: install.sh [--private <dir>] [--machine <name>]
@@ -24,7 +23,6 @@ while [ $# -gt 0 ]; do
   esac
 done
 
-local_rules="$HOME/.config/jstack/AGENTS.local.md"
 out="$HOME/.codex/AGENTS.md"
 
 parts="$here/AGENTS.md"
@@ -35,7 +33,6 @@ if [ -d "$private" ]; then
 else
   echo "no private rules at $private; using the general rules only" >&2
 fi
-[ -f "$local_rules" ] && parts="$parts $local_rules"
 
 mkdir -p "$(dirname "$out")"
 

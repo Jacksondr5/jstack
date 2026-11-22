@@ -59,8 +59,7 @@ to anyone. The rest lives in a private companion repository:
 - `machines/<host>.md`: one machine's hosts, ports, devices and paths.
 
 [`global/install.sh`](global/install.sh) joins `global/AGENTS.md`, the private
-`personal.md`, this machine's `machines/<host>.md` and, if present,
-`~/.config/jstack/AGENTS.local.md` (for what must not leave the machine) into
+`personal.md` and this machine's `machines/<host>.md` into
 `~/.codex/AGENTS.md`. Codex reads that file, and Claude Code includes it from
 `~/.claude/CLAUDE.md` with `@~/.codex/AGENTS.md`.
 
