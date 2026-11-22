@@ -1,8 +1,7 @@
 #!/bin/sh
 # Builds ~/.codex/AGENTS.md from, in order:
 #   1. this repository's global/AGENTS.md (general rules, public);
-#   2. <private>/personal.md (your rules for your own projects);
-#   3. <private>/machines/<machine>.md (this machine's facts), if present.
+#   2. <private>/machines/<machine>.md (this machine's facts), if present.
 # Claude Code reads the same file through `@~/.codex/AGENTS.md` in ~/.claude/CLAUDE.md.
 #
 # Usage: install.sh [--private <dir>] [--machine <name>]
@@ -28,7 +27,6 @@ out="$HOME/.codex/AGENTS.md"
 parts="$here/AGENTS.md"
 if [ -d "$private" ]; then
   private=$(cd "$private" && pwd)
-  [ -f "$private/personal.md" ] && parts="$parts $private/personal.md"
   if [ -f "$private/machines/$machine.md" ]; then
     parts="$parts $private/machines/$machine.md"
   else

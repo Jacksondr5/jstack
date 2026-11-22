@@ -8,6 +8,9 @@ groups:
   thread-helpers:
     description: Catch up on a long thread, or go through a long list of decisions one at a time.
     skills: [catch-up, one-by-one]
+  j5code:
+    description: Jackson's maintainer rules for J5 Code. Loads itself in a Jacksondr5/j5code checkout.
+    skills: [j5code]
   t3code-giveback:
     description: For agents giving J5 Code fixes back to T3 Code. Loads itself in a pingdotgg/t3code checkout.
     skills: [t3code-giveback]
