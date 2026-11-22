@@ -33,6 +33,8 @@ this repository do not reach the installed copy. Run the same `add` command
 again to pick them up. `npx skills update -g` refreshes GitHub installs, but it
 skips local-path installs.
 
+Change a skill here, never in an installed copy: a refresh overwrites the copy.
+
 ### J5 Code
 
 This repository is a J5 Code skill catalog: [`catalog.yaml`](catalog.yaml)
@@ -46,6 +48,20 @@ GitHub source. `take-the-wheel` isn't in the catalog; install it with the
 
 J5 Code won't replace a skill folder the `skills` CLI installed. Remove those
 copies first, for example `npx skills remove -g -s council`, then apply.
+
+## Rules for every agent
+
+[`global/AGENTS.md`](global/AGENTS.md) holds my preferences for every agent, on
+every machine. Each machine keeps its own rules (hosts, ports, local services)
+in `~/.config/jstack/AGENTS.local.md`. [`global/install.sh`](global/install.sh)
+joins the two into `~/.codex/AGENTS.md`, which Codex reads and Claude Code
+includes from `~/.claude/CLAUDE.md` with `@~/.codex/AGENTS.md`. Rerun it after
+changing either file. It keeps a hand-written `~/.codex/AGENTS.md` as a backup
+before replacing it.
+
+This repository is public, so `global/AGENTS.md` holds only rules that make
+sense to anyone. Anything about my machines, accounts or work goes in the local
+file.
 
 ## Credits
 

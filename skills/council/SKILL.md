@@ -43,5 +43,15 @@ If you agree with their recommendations, make the changes and request a fresh re
 
 Do not let repeated reviews result in scope creep. It is your job to fight to keep scope limited.
 
+## UI review
+
+When the work changes UI, give every delegate this rule. Judge each "after" screen as a whole, against the design standards and the matching screen before the change. Checking that the change matches the code is not enough.
+
+1. **A visual defect on a screen the change touches blocks.** That covers misalignment, clipping, overlap, awkward wrapping, inconsistent spacing or type, and low contrast in either theme. Fix it when the change caused or worsened it, or when the fix is small and in a file the change already touches. List the rest.
+2. **A departure from a decision or mockup the user already made blocks.** The fix restores the decision. It never invents a new design.
+3. **"It would look better if…" never blocks and is never built.** List it as a design question for the user.
+
+Evidence pairs always show the full screen, plus a crop when the change is small.
+
 ## Council Members
 Include the latest version of Claude Opus and GPT Sol in each council.  If those are not available, stop and ask for help.  If Grok models are available, include one as well.
