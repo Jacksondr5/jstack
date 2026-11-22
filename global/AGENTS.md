@@ -29,6 +29,12 @@ after them.
 - **A skill holds only what I decided or told you,** never general advice a
   capable model already follows or procedures I never used.
 
+## Projects
+
+- Before any work in a `Jacksondr5/j5code` checkout, load the `j5code` skill.
+- Before any work in a `pingdotgg/t3code` checkout, load the `t3code-giveback`
+  skill.
+
 ## Screenshots for pull requests
 
 **Every PR that changes UI must have screenshots on the PR.** This overrides any repository's own guidance, including rules that make screenshots optional, "upon request", or that ask before starting a browser.

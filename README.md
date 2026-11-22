@@ -12,6 +12,7 @@ and fall back to the harness's own tools when they are not.
 | --- | --- | --- |
 | [`council`](skills/council/SKILL.md) | "council" | Asks Claude Opus, GPT Sol, and Grok (when available) for a review, fixes what they agree on, and repeats until they are satisfied. Scores go in the PR description. |
 | [`take-the-wheel`](skills/take-the-wheel/SKILL.md) | "take the wheel" | Hands the agent the work end to end, with nobody watching. Grants permission to use the test methods it needs without asking first. |
+| [`j5code`](skills/j5code/SKILL.md) | (loads itself in a `Jacksondr5/j5code` checkout) | My maintainer rules for J5 Code: who merges what, where give-backs go, and live and mobile testing. |
 | [`t3code-giveback`](skills/t3code-giveback/SKILL.md) | (loads itself in a `pingdotgg/t3code` checkout) | Briefs agents giving J5 Code fixes back to T3 Code: Jackson's rules for posting upstream, the lifecycle of an item, and the giveback dashboard. |
 
 ## Install
@@ -53,14 +54,13 @@ copies first, for example `npx skills remove -g -s council`, then apply.
 
 [`global/AGENTS.md`](global/AGENTS.md) holds my preferences for every agent, on
 every machine. This repository is public, so it holds only rules that make sense
-to anyone. The rest lives in a private companion repository:
+to anyone. Rules for one project live in that project's skill, such as
+[`j5code`](skills/j5code/SKILL.md), so they cost context only when the work is
+there. Each machine's hosts, ports, devices and paths live in a private
+companion repository, in `machines/<host>.md`.
 
-- `personal.md`: rules for my own projects, the same on every machine;
-- `machines/<host>.md`: one machine's hosts, ports, devices and paths.
-
-[`global/install.sh`](global/install.sh) joins `global/AGENTS.md`, the private
-`personal.md` and this machine's `machines/<host>.md` into
-`~/.codex/AGENTS.md`. Codex reads that file, and Claude Code includes it from
+[`global/install.sh`](global/install.sh) joins `global/AGENTS.md` and this
+machine's `machines/<host>.md` into `~/.codex/AGENTS.md`. Codex reads that file, and Claude Code includes it from
 `~/.claude/CLAUDE.md` with `@~/.codex/AGENTS.md`.
 
 ```bash
