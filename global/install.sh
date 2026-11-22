@@ -29,7 +29,11 @@ parts="$here/AGENTS.md"
 if [ -d "$private" ]; then
   private=$(cd "$private" && pwd)
   [ -f "$private/personal.md" ] && parts="$parts $private/personal.md"
-  [ -f "$private/machines/$machine.md" ] && parts="$parts $private/machines/$machine.md"
+  if [ -f "$private/machines/$machine.md" ]; then
+    parts="$parts $private/machines/$machine.md"
+  else
+    echo "no machines/$machine.md in $private; skipping machine rules" >&2
+  fi
 else
   echo "no private rules at $private; using the general rules only" >&2
 fi
