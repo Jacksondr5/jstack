@@ -33,6 +33,8 @@ this repository do not reach the installed copy. Run the same `add` command
 again to pick them up. `npx skills update -g` refreshes GitHub installs, but it
 skips local-path installs.
 
+Change a skill here, never in an installed copy: a refresh overwrites the copy.
+
 ### J5 Code
 
 This repository is a J5 Code skill catalog: [`catalog.yaml`](catalog.yaml)
@@ -46,6 +48,29 @@ GitHub source. `take-the-wheel` isn't in the catalog; install it with the
 
 J5 Code won't replace a skill folder the `skills` CLI installed. Remove those
 copies first, for example `npx skills remove -g -s council`, then apply.
+
+## Rules for every agent
+
+[`global/AGENTS.md`](global/AGENTS.md) holds my preferences for every agent, on
+every machine. This repository is public, so it holds only rules that make sense
+to anyone. The rest lives in a private companion repository:
+
+- `personal.md`: rules for my own projects, the same on every machine;
+- `machines/<host>.md`: one machine's hosts, ports, devices and paths.
+
+[`global/install.sh`](global/install.sh) joins `global/AGENTS.md`, the private
+`personal.md` and this machine's `machines/<host>.md` into
+`~/.codex/AGENTS.md`. Codex reads that file, and Claude Code includes it from
+`~/.claude/CLAUDE.md` with `@~/.codex/AGENTS.md`.
+
+```bash
+global/install.sh                      # private clone next to this one, machine = hostname -s
+global/install.sh --private <dir> --machine <name>
+```
+
+Rerun it after changing any of those files. It keeps a hand-written
+`~/.codex/AGENTS.md` as a backup before replacing it. Without a private clone it
+installs the general rules alone.
 
 ## Credits
 
