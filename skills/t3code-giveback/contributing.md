@@ -23,6 +23,7 @@ Upstream rewrote `CONTRIBUTING.md` on 2026-11-11. Review time is their bottlenec
 
   An upstream choice that harms no upstream user is not a giveback.
 - **Decide: bug or feature.** Use upstream's own test: a change to how the product behaves is a feature, even when the PR calls it a fix. Record the verdict in `changeKind`: `bug`, `behaviour_change` or `feature`. A behaviour change or a feature can become an Ideas discussion or be dropped. It never becomes a PR.
+- **Look and feel: obvious, not taste.** A visual item qualifies only if most people would call it broken at a glance: content hidden, a control that can't be reached or tapped, or something clearly misaligned against its neighbours. A matter of taste or design preference is not given back. Say plainly in your verdict which side the item falls on, and keep the fix to the fault, with no restyling.
 - **Related open items.** When you find an open upstream issue or PR related to your item, tell Jackson in your recommendation. He decides case by case what we do there, if anything.
 
 ## 2. Recommend a route [deciding, waiting on Jackson]
@@ -42,6 +43,7 @@ Security-shaped items: check https://t3.codes/security-policy, and keep the item
 ## 3. Prepare [preparing]
 
 - **Branch** from fresh `origin/main` in your J5 worktree, named `fix/<what-it-fixes>`. One underlying problem per PR.
+- **Building on someone else's PR:** when the fix takes up another contributor's closed or abandoned upstream PR, cherry-pick that PR's commits onto the fresh branch first, so they stay the author. Put our changes (conflict resolution, extra paths, tests) on top as separate commits, and link the original PR in the body. If Jackson asks, give its author a chance to reopen first.
 - **Shape it for the landing pipeline** (step 6). It picks up PRs that are small and mergeable; it has never taken a draft or an XL one. So: a diff of XS to M, and a reproduction the pipeline can run on the base commit by itself, without special hardware or a second account. Its two most common stops are that it could not prove the fix and that it found no bug on the base commit.
 - **Push** to J5's GitHub fork, which is the fork of t3code: `git push j5 HEAD:refs/heads/<branch>`. The `j5` remote is `https://github.com/Jacksondr5/j5code.git`; add it if it is missing. A builder subagent commits locally, and the agent that owns the item pushes. expo/expo-device-hub work uses `Jacksondr5/expo-device-hub`.
 - **Tests:** focused tests that fail on `main` and pass on the branch, following upstream's AGENTS.md testing rules. Before posting, run `vp run check:changed` and `vp test run <files>`. Revert incidental lockfile churn, and keep dev homes and scratch out of the diff. Use fnm's Node, not an ad-hoc one.
