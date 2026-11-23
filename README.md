@@ -12,6 +12,7 @@ and fall back to the harness's own tools when they are not.
 | --- | --- | --- |
 | [`council`](skills/council/SKILL.md) | "council" | Asks Claude Opus, GPT Sol, and Grok (when available) for a review, fixes what they agree on, and repeats until they are satisfied. Scores go in the PR description. |
 | [`take-the-wheel`](skills/take-the-wheel/SKILL.md) | "take the wheel" | Hands the agent the work end to end, with nobody watching. Grants permission to use the test methods it needs without asking first. |
+| [`pr-evidence`](skills/pr-evidence/SKILL.md) | (loads itself when a PR needs screenshots or video) | How to capture before/after evidence, upload images and videos to GitHub, check the links, and present them in the PR. |
 | [`j5code`](skills/j5code/SKILL.md) | (loads itself in a `Jacksondr5/j5code` checkout) | My maintainer rules for J5 Code: who merges what, where give-backs go, and live and mobile testing. |
 | [`t3code-giveback`](skills/t3code-giveback/SKILL.md) | (loads itself in a `pingdotgg/t3code` checkout) | Briefs agents giving J5 Code fixes back to T3 Code: Jackson's rules for posting upstream, the lifecycle of an item, and the giveback dashboard. |
 
