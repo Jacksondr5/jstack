@@ -5,6 +5,9 @@ groups:
   review:
     description: Get a change reviewed by a council of models until they are satisfied.
     skills: [council]
+  pr-evidence:
+    description: Capture, upload and present before/after screenshots and videos for a PR.
+    skills: [pr-evidence]
   thread-helpers:
     description: Catch up on a long thread, or go through a long list of decisions one at a time.
     skills: [catch-up, one-by-one]
