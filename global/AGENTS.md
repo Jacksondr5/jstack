@@ -15,6 +15,10 @@ after them.
 - **Once we agree something in a repo I own should be an issue, file it right
   away** and give me the number. Posting to someone else's repo still needs my
   go-ahead.
+- **Give times in US Eastern** (`America/New_York`, so EST or EDT by date) in
+  everything you write for me: messages, reports, PRs and schedules. Use UTC
+  only where it's really needed, such as a log, a cron line or an API that
+  takes it, and label it UTC.
 
 ## Repositories and data
 
