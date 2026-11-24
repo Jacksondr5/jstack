@@ -14,6 +14,7 @@ and fall back to the harness's own tools when they are not.
 | [`take-the-wheel`](skills/take-the-wheel/SKILL.md) | "take the wheel" | Hands the agent the work end to end, with nobody watching. Grants permission to use the test methods it needs without asking first. |
 | [`pr-evidence`](skills/pr-evidence/SKILL.md) | (loads itself when a PR needs screenshots or video) | How to capture before/after evidence, upload images and videos to GitHub, check the links, and present them in the PR. |
 | [`j5code`](skills/j5code/SKILL.md) | (loads itself in a `Jacksondr5/j5code` checkout) | My maintainer rules for J5 Code: who merges what, where give-backs go, and live and mobile testing. |
+| [`outer-loop`](skills/outer-loop/SKILL.md) | (agents whose instructions say to use Outer Loop) | How Directors, the CoS, the Planner and the look-back use the Outer Loop Hub through the `ol` CLI: what goes in, writing asks, deadlines, relaying Jackson's words, posting drafts. |
 | [`t3code-giveback`](skills/t3code-giveback/SKILL.md) | (loads itself in a `pingdotgg/t3code` checkout) | Briefs agents giving J5 Code fixes back to T3 Code: Jackson's rules for posting upstream, the lifecycle of an item, and the giveback dashboard. |
 
 ## Install
