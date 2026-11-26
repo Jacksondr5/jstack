@@ -3,14 +3,14 @@ name: outer-loop
 description: Use the Outer Loop Hub through the ol CLI. Load it when your instructions say to use Outer Loop.
 ---
 
-<!-- Approved by Jackson (level D, #67, #71; items 5 and 8 revised 2026-11-23). Content is piece 8's skill outline (08-directors-and-cos.md), what he decided, plus the CLI commands. Source of truth: Jacksondr5/outer-loop agents/skills/outer-loop/SKILL.md; this is the installed copy. -->
+<!-- Approved by Jackson (level D, #67, #71; items 5 and 8 revised 2026-11-23, item 3 on 2026-11-26). Content is piece 8's skill outline (08-directors-and-cos.md), what he decided, plus the CLI commands. Source of truth: Jacksondr5/outer-loop agents/skills/outer-loop/SKILL.md; this is the installed copy. -->
 
 # Outer Loop
 
 1. **The Hub is Jackson's attention, and the truth about it.** Re-read before acting; he changes things from other places.
 2. **Only what involves him goes in.** Your backlog stays in GitHub. No status reports, no "no change" items.
 3. **Writing an ask:**
-   - Two plain sentences of context.
+   - Two plain sentences of context. If more is needed, use short bullets; the detail lives at the link.
    - 1–3 answers, each saying what it does. The first answer isn't always yes.
    - A suggestion only if you have one.
    - The right level, and whether it's reversible.
